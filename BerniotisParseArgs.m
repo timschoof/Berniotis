@@ -30,7 +30,7 @@ p.addParameter('InterauralTonePhase', 0, @isnumeric);
 p.addParameter('TranspositionFreq', 0, @isnumeric);
 p.addParameter('TranspositionLoPassCutoff', 1500, @isnumeric);
 p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);  
-p.addParameter('rms2use', 0.07, @isnumeric);
+p.addParameter('rms2use',0.15, @isnumeric);
 p.addParameter('NoiseBandWidth', 100, @isnumeric); % always centred on the probe  
 p.addParameter('RiseFall', 50, @isnumeric);  
 p.addParameter('ISI', 400, @isnumeric);  
@@ -55,7 +55,7 @@ p.addParameter('FeedBack', 'Corrective', @ischar);
 p.addParameter('MAX_TRIALS', 30, @isnumeric);
 p.addParameter('FacePixDir', 'Bears', @ischar);
 %% parameters concerned with background noise
-p.addParameter('BackNzLevel',0, @isnumeric); % in absolute rms
+p.addParameter('BackNzLevel',0.035, @isnumeric); % in absolute rms
 p.addParameter('BackNzLoPass',1500, @isnumeric);
 p.addParameter('BackNzHiPass',50, @isnumeric);
 p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
