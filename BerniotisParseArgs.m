@@ -26,7 +26,7 @@ p.addParameter('LongMaskerNoise', 0, @isnumeric);
 % if >0 = continuous through triple at given duration (ms)
 p.addParameter('preSilence', 100, @isnumeric);
 % an interval of silence prepended to the wavr to try to avoid sound glitches in Windows
-p.addParameter('InterauralTonePhase', 0, @isnumeric);
+p.addParameter('InterauralTonePhase', '0', @ischar); % has to be character when reading in 'pi' from excel file
 p.addParameter('TranspositionFreq', 0, @isnumeric);
 p.addParameter('TranspositionLoPassCutoff', 1500, @isnumeric);
 p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);  
@@ -60,9 +60,9 @@ p.addParameter('BackNzLoPass',1500, @isnumeric);
 p.addParameter('BackNzHiPass',50, @isnumeric);
 p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
 %% parameters concerned with debugging
-p.addParameter('PlotTrackFile', 0, @isnumeric);
+p.addParameter('PlotTrackFile', 1, @isnumeric);
 p.addParameter('DEBUG', 0, @isnumeric);    
-p.addParameter('outputAllWavs', 0, @isnumeric); % for debugging purposes 
+p.addParameter('outputAllWavs', 1, @isnumeric); % for debugging purposes 
 p.addParameter('MAX_SNR_dB', 22, @isnumeric);    
 p.addParameter('IgnoreTrials', 3, @isnumeric); % number of initial trials to ignore errors on
 p.addParameter('OutputDir','results', @ischar);
@@ -70,6 +70,7 @@ p.addParameter('StartMessage', 'none', @ischar);
 p.addParameter('MaxBumps', 3, @isnumeric);   
 p.addParameter('SampFreq', 44100, @isnumeric);    
 p.addParameter('VolumeSettingsFile', 'VolumeSettings.txt', @ischar);
+p.addParameter('usePlayrec', 1, @isnumeric); % are you using playrec? yes = 1, no = 0
 
 % p.addParamValue('PresentInQuiet', 0, @(x)x==0 || x==1);
 
@@ -77,6 +78,13 @@ p.parse(ListenerName, varargin{:});
 sArgs=p.Results;
 sArgs.SNR_dB = sArgs.starting_SNR; % current level
 sArgs.NoiseBandLimits=[sArgs.ToneFreq-sArgs.NoiseBandWidth/2 sArgs.ToneFreq+sArgs.NoiseBandWidth/2];
+
+% make InterauralTonePhase numeric
+if strcmp(sArgs.InterauralTonePhase,'pi')
+    sArgs.InterauralTonePhase=pi;
+else
+    sArgs.InterauralTonePhase=str2double(sArgs.InterauralTonePhase);
+end
 
 if sArgs.TranspositionFreq>0
 % lowpass filter for forwards/backwards

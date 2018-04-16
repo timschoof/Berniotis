@@ -1,0 +1,6 @@
+nBlocks,nPractice,usePlayrec,VolumeSettingsFile,starting_SNR,ToneFreq,TranspositionFreq,InterauralTonePhase,MAX_TRIALS,NoiseBandWidth,preSilence,NumSignalPulses,ToneDuration,WithinPulseISI,ISI,NoiseDuration,LongMaskerNoise,RiseFall,fixed,BackNzPulsed,BackNzLoPass,BackNzHiPass
+0,1,0,VolumeSettings4kHz.txt,12,125,4000,0,5,100,300,3,200,50,300,800,0,20,noise,0,1300,50
+1,0,0,VolumeSettings4kHz.txt,12,125,4000,pi,30,100,300,3,200,50,300,800,0,20,noise,0,1300,50
+1,0,0,VolumeSettings4kHz.txt,12,125,4000,pi,30,100,300,3,200,50,300,800,0,20,noise,0,1300,50
+1,0,0,VolumeSettings4kHz.txt,12,125,4000,0,30,100,300,3,200,50,300,800,0,20,noise,0,1300,50
+1,0,0,VolumeSettings4kHz.txt,12,125,4000,0,30,100,300,3,200,50,300,800,0,20,noise,0,1300,50

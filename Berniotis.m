@@ -13,28 +13,20 @@ rng('shuffle')
 levitts_index = 1;
 player = 1; % are you using playrec? yes = 1, no = 0
 
-%% Get audio device ID based on the USB name of the device.
-if player == 1 % if you're using playrec
-    dev = playrec('getDevices');
-    d = find( cellfun(@(x)isequal(x,'ASIO Fireface USB'),{dev.name}) ); % find device of interest - RME FireFace channels 3+4
-    playDeviceInd = dev(d).deviceID; 
-    recDeviceInd = dev(d).deviceID;
-end
 
 %% get control parameters by picking up defaults and specified values from args
 if ~rem(nargin,2)
     error('You should not have an even number of input arguments');
 end
 p=BerniotisParseArgs(varargin{1},varargin{2:end});
-% % now set all parameters obtained
-% fVars=fieldnames(SpecifiedArgs);
-% for f=1:length(fVars)
-%     if ischar(eval(['SpecifiedArgs.' char(fVars{f})]))
-%         eval([char(fVars{f}) '=' '''' eval(['SpecifiedArgs.' char(fVars{f})]) ''';']);
-%     else % it's a number
-%         eval([char(fVars{f}) '='  num2str(eval(['SpecifiedArgs.' char(fVars{f})])) ';'])
-%     end
-% end
+
+%% Get audio device ID based on the USB name of the device.
+if p.usePlayrec == 1 % if you're using playrec
+    dev = playrec('getDevices');
+    d = find( cellfun(@(x)isequal(x,'ASIO Fireface USB'),{dev.name}) ); % find device of interest - RME FireFace channels 3+4
+    playDeviceInd = dev(d).deviceID; 
+    recDeviceInd = dev(d).deviceID;
+end
 
 %% Settings for level
 if ispc
@@ -43,7 +35,6 @@ else ismac
     !osascript set_volume_applescript.scpt
     % VolumeSettingsFile='VolumeSettingsMac.txt';
 end
-
 
 %% further initialisations
 LEVITTS_CONSTANT = [1 p.LevittsK];
