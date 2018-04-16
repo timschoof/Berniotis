@@ -11,8 +11,6 @@ function Berniotis(varargin)
 VERSION=2.0;
 rng('shuffle')
 levitts_index = 1;
-player = 1; % are you using playrec? yes = 1, no = 0
-
 
 %% get control parameters by picking up defaults and specified values from args
 if ~rem(nargin,2)
@@ -160,15 +158,14 @@ while (num_turns<p.FINAL_TURNS  && limit<=p.MaxBumps && trial<(p.MAX_TRIALS-1))
         end
         %% play it out and score it.
         % intialize playrec if necessary
-        if player == 1 % if you're using playrec
+        if p.usePlayrec == 1 % if you're using playrec
             if playrec('isInitialised')
-                fprintf('Resetting playrec as previously initialised\n');
                 playrec('reset');
             end
             playrec('init', p.SampFreq, playDeviceInd, recDeviceInd);
         end
         if ~p.DEBUG
-            [response,p] = PlayAndReturnResponse3I3AFC(w,trial,p,player);
+            [response,p] = PlayAndReturnResponse3I3AFC(w,trial,p);
         %% stat rat section for output format, etc.
         else 
             % get 2 right at the start of session, and then make
@@ -189,22 +186,7 @@ while (num_turns<p.FINAL_TURNS  && limit<=p.MaxBumps && trial<(p.MAX_TRIALS-1))
         if strcmp(response,'quit')
             break
         end
-        
-        %         % give feedback if necessary
-        %         if ~strcmp(FeedBack,'None') && ~DEBUG
-        %             if strcmp(FeedBack,'Neutral')
-        %                 image(WinkingFace);
-        %             elseif (correct && strcmp(FeedBack,'Corrective')) || strcmp(FeedBack,'AlwaysGood')
-        %                 image(SmileyFace);
-        %             else
-        %                 image(FrownyFace);
-        %             end
-        %             set(gca,'Visible','off')
-        %             pause(0.5)
-        %             image(AnimalImage)
-        %             set(gca,'Visible','off')
-        %         end
-        
+                
         fout = fopen(OutFile, 'at');
         % print out relevant information
         % 'listener,CondCode,date,time,trial,SNR,correct,order,response,steprTime,rev');

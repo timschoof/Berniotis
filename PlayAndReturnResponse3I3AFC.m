@@ -1,4 +1,4 @@
-function [response,p] = PlayAndReturnResponse3I3AFC(Wave2Play,trial,p,player)
+function [response,p] = PlayAndReturnResponse3I3AFC(Wave2Play,trial,p)
 %
 % varargins
 %
@@ -16,7 +16,7 @@ if trial==1
     pause(0.5);
 end
 
-if player == 1 % if you're using playrec
+if p.usePlayrec == 1 % if you're using playrec
     playrec('play', Wave2Play, [3,4]);
 else
     playEm = audioplayer(Wave2Play,p.SampFreq);
