@@ -13,27 +13,27 @@ function sArgs=BerniotisParseArgs(ListenerName,varargin)
 p = inputParser;
 p.addRequired('ListenerName', @ischar);
 
-p.addParameter('ToneFreq', 500, @isnumeric);
-p.addParameter('NumSignalPulses',  1, @isnumeric);
+p.addParameter('ToneFreq', 125, @isnumeric);
+p.addParameter('NumSignalPulses',  3, @isnumeric);
 % the number of distinct pulses in the target
-p.addParameter('ToneDuration', 400, @isnumeric);  
-p.addParameter('WithinPulseISI', 100, @isnumeric);  
-p.addParameter('NoiseDuration', 500, @isnumeric);
+p.addParameter('ToneDuration', 200, @isnumeric);  
+p.addParameter('WithinPulseISI', 50, @isnumeric);  
+p.addParameter('NoiseDuration', 800, @isnumeric);
 % the duration of the masker pulse. If longer than the probe, the probe is
 % centred in it. Only relevant if LongMaskerNoise=0
-p.addParameter('LongMaskerNoise', 0, @isnumeric);
+p.addParameter('LongMaskerNoise', 000, @isnumeric);
 % if 0, masker noise is pulsed along with target intervals
 % if >0 = continuous through triple at given duration (ms)
-p.addParameter('preSilence', 100, @isnumeric);
+p.addParameter('preSilence', 0, @isnumeric);
 % an interval of silence prepended to the wavr to try to avoid sound glitches in Windows
 p.addParameter('InterauralTonePhase', '0', @ischar); % has to be character when reading in 'pi' from excel file
-p.addParameter('TranspositionFreq', 0, @isnumeric);
+p.addParameter('TranspositionFreq', 4000, @isnumeric);
 p.addParameter('TranspositionLoPassCutoff', 1500, @isnumeric);
 p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);  
 p.addParameter('rms2use',0.15, @isnumeric);
 p.addParameter('NoiseBandWidth', 100, @isnumeric); % always centred on the probe  
-p.addParameter('RiseFall', 50, @isnumeric);  
-p.addParameter('ISI', 400, @isnumeric);  
+p.addParameter('RiseFall', 20, @isnumeric);  
+p.addParameter('ISI', 300, @isnumeric);  
 p.addParameter('fixed', 'noise',  @(x)any(strcmpi(x,{'noise','signal'})));
 p.addParameter('dBSPL', 70, @isnumeric);
 % the nominal level of the fixed signal or noise - not yet used
@@ -42,13 +42,13 @@ p.addParameter('dBSPL', 70, @isnumeric);
 p.addParameter('inQuiet',0, @isnumeric); 
 % present tones in quiet in order to find absolute threshold without the
 % masker present. Only makes sense for foxed masker
-p.addParameter('starting_SNR',20, @isnumeric);
+p.addParameter('starting_SNR',12, @isnumeric);
 p.addParameter('START_change_dB', 5, @isnumeric);
 p.addParameter('MIN_change_dB', 2, @isnumeric);
 p.addParameter('LevittsK', 2, @isnumeric);
 p.addParameter('INITIAL_TURNS', 3, @isnumeric);
 p.addParameter('FINAL_TURNS', 4, @isnumeric); 
-p.addParameter('InitialDescentMinimum', -22, @isnumeric); 
+p.addParameter('InitialDescentMinimum', -12, @isnumeric); 
 p.addParameter('TaskFormat', '3I-3AFC', @(x)any(strcmpi(x,{'3I-3AFC','3I-2AFC'})));
 p.addParameter('Order', 2, @isnumeric);
 p.addParameter('FeedBack', 'Corrective', @ischar);
@@ -56,14 +56,14 @@ p.addParameter('MAX_TRIALS', 30, @isnumeric);
 p.addParameter('FacePixDir', 'Bears', @ischar);
 %% parameters concerned with background noise
 p.addParameter('BackNzLevel',0.035, @isnumeric); % in absolute rms
-p.addParameter('BackNzLoPass',1500, @isnumeric);
+p.addParameter('BackNzLoPass',1300, @isnumeric);
 p.addParameter('BackNzHiPass',50, @isnumeric);
 p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
 %% parameters concerned with debugging
 p.addParameter('PlotTrackFile', 1, @isnumeric);
 p.addParameter('DEBUG', 0, @isnumeric);    
 p.addParameter('outputAllWavs', 1, @isnumeric); % for debugging purposes 
-p.addParameter('MAX_SNR_dB', 22, @isnumeric);    
+p.addParameter('MAX_SNR_dB', 12, @isnumeric);    
 p.addParameter('IgnoreTrials', 3, @isnumeric); % number of initial trials to ignore errors on
 p.addParameter('OutputDir','results', @ischar);
 p.addParameter('StartMessage', 'none', @ischar);
