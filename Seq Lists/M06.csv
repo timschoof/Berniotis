@@ -1,10 +1,10 @@
-nBlocks,nPracticeTrials,InterauralTonePhase,MAX_TRIALS,InitialDescentMinimum,dBSPL,StartMessage,
-0,1,pi,5,-12,80,Let's practice first!,
-1,0,pi,30,-12,40,This will be rather quiet,
-1,0,pi,30,-12,40,This will be rather quiet,
-1,0,0,30,-5,40,This will be rather quiet,
-1,0,0,30,-5,40,This will be rather quiet,
-1,0,0,30,-5,80,This will be fairly loud,
-1,0,pi,30,-12,80,This will be fairly loud,
-1,0,0,30,-5,80,This will be fairly loud,
-1,0,pi,30,-12,80,This will be fairly loud,
+nBlocks,nPracticeTrials,InterauralTonePhase,MAX_TRIALS,InitialDescentMinimum,dBSPL,StartMessage
+0,1,pi,5,-12,80,
+1,0,pi,30,-12,40,This will be rather quiet
+1,0,pi,30,-12,40,This will be rather quiet
+1,0,0,30,-5,40,This will be rather quiet
+1,0,0,30,-5,40,This will be rather quiet
+1,0,0,30,-5,80,This will be fairly loud
+1,0,pi,30,-12,80,This will be fairly loud
+1,0,0,30,-5,80,This will be fairly loud
+1,0,pi,30,-12,80,This will be fairly loud

@@ -11,6 +11,7 @@ function Berniotis(varargin)
 VERSION=2.0;
 rng('shuffle')
 levitts_index = 1;
+'isrme';
 
 %% get control parameters by picking up defaults and specified values from args
 if ~rem(nargin,2)
@@ -29,9 +30,24 @@ end
 %% Settings for level
 if ispc
     [~, OutRMS]=SetLevels(p.VolumeSettingsFile);
-else ismac
+elseif ismac
     !osascript set_volume_applescript.scpt
     % VolumeSettingsFile='VolumeSettingsMac.txt';
+end
+
+%% Set RME Slider if necessary
+if strcmp(p.RMEslider,'TRUE')
+    % read in RME settings file
+    RMEsetting=robustcsvread('RMEsettings.csv');
+    % select columns with relevant info
+    LevelCol=strmatch('dBSPL',strvcat(RMEsetting{1,:}));
+    SliderCol=strmatch('slider',strvcat(RMEsetting{1,:}));
+    % find index of dBSPL level
+    index = find(strcmp({RMEsetting{:,LevelCol}}, num2str(p.dBSPL)));
+    % find the corresponding RME slider setting
+    RMEattn = RMEsetting{index,SliderCol};
+    % set RME slider
+    SetMainSlider(str2double(RMEattn))
 end
 
 %% further initialisations

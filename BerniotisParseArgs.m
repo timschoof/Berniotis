@@ -71,6 +71,7 @@ p.addParameter('MaxBumps', 3, @isnumeric);
 p.addParameter('SampFreq', 44100, @isnumeric);    
 p.addParameter('VolumeSettingsFile', 'VolumeSettings.txt', @ischar);
 p.addParameter('usePlayrec', 1, @isnumeric); % are you using playrec? yes = 1, no = 0
+p.addParameter('RMEslider', 'TRUE', @ischar); % adjust RME slider from MATLAB? TRUE or FALSE
 
 % p.addParamValue('PresentInQuiet', 0, @(x)x==0 || x==1);
 
