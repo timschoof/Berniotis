@@ -16,7 +16,12 @@ if trial==1
     pause(0.5);
 end
 
+% intialize playrec if necessary
 if p.usePlayrec == 1 % if you're using playrec
+    if playrec('isInitialised')
+        playrec('reset');
+    end
+    playrec('init', p.SampFreq, p.playDeviceInd, p.recDeviceInd);
     playrec('play', Wave2Play, [3,4]);
 else
     playEm = audioplayer(Wave2Play,p.SampFreq);

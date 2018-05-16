@@ -19,14 +19,6 @@ if ~rem(nargin,2)
 end
 p=BerniotisParseArgs(varargin{1},varargin{2:end});
 
-%% Get audio device ID based on the USB name of the device.
-if p.usePlayrec == 1 % if you're using playrec
-    dev = playrec('getDevices');
-    d = find( cellfun(@(x)isequal(x,'ASIO Fireface USB'),{dev.name}) ); % find device of interest - RME FireFace channels 3+4
-    playDeviceInd = dev(d).deviceID; 
-    recDeviceInd = dev(d).deviceID;
-end
-
 %% Settings for level
 if ispc
     [~, OutRMS]=SetLevels(p.VolumeSettingsFile);
@@ -37,17 +29,7 @@ end
 
 %% Set RME Slider if necessary
 if strcmp(p.RMEslider,'TRUE')
-    % read in RME settings file
-    RMEsetting=robustcsvread('RMEsettings.csv');
-    % select columns with relevant info
-    LevelCol=strmatch('dBSPL',strvcat(RMEsetting{1,:}));
-    SliderCol=strmatch('slider',strvcat(RMEsetting{1,:}));
-    % find index of dBSPL level
-    index = find(strcmp({RMEsetting{:,LevelCol}}, num2str(p.dBSPL)));
-    % find the corresponding RME slider setting
-    RMEattn = RMEsetting{index,SliderCol};
-    % set RME slider
-    SetMainSlider(str2double(RMEattn))
+    PrepareRMEslider('RMEsettings.csv', p.dBSPL);
 end
 
 %% further initialisations
@@ -61,19 +43,6 @@ if p.START_change_dB==0 || p.MIN_change_dB == 0
     p.FINAL_TURNS = 99;
     LEVITTS_CONSTANT = [1 1];
     MaxBumps=99;
-end
-
-%% read in all the necessary faces for feedback
-if ~strcmp(p.FeedBack, 'None')
-    FacesDir = fullfile('Faces',p.FacePixDir,'');
-    SmileyFace = imread(fullfile(FacesDir,'smile24.bmp'),'bmp');
-    WinkingFace = imread(fullfile(FacesDir,'wink24.bmp'),'bmp');
-    FrownyFace = imread(fullfile(FacesDir,'frown24.bmp'),'bmp');
-    %ClosedFace = imread(fullfile(FacesDir,'closed24.bmp'),'bmp');
-    %OpenFace = imread(fullfile(FacesDir,'open24.bmp'),'bmp');
-    %BlankFace = imread(fullfile(FacesDir,'blank24.bmp'),'bmp');
-    p.CorrectImage=SmileyFace;
-    p.IncorrectImage=FrownyFace;
 end
 
 %%	setup a few starting values for adaptive track
@@ -173,13 +142,6 @@ while (num_turns<p.FINAL_TURNS  && limit<=p.MaxBumps && trial<(p.MAX_TRIALS-1))
             audiowrite(fullfile(p.wavOutputDir,sprintf('T%02d%+02dNz.wav',trial,round(p.SNR_dB))),Nz,p.SampFreq);           
         end
         %% play it out and score it.
-        % intialize playrec if necessary
-        if p.usePlayrec == 1 % if you're using playrec
-            if playrec('isInitialised')
-                playrec('reset');
-            end
-            playrec('init', p.SampFreq, playDeviceInd, recDeviceInd);
-        end
         if ~p.DEBUG
             [response,p] = PlayAndReturnResponse3I3AFC(w,trial,p);
         %% stat rat section for output format, etc.

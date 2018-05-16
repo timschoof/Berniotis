@@ -35,7 +35,7 @@ p.addParameter('NoiseBandWidth', 100, @isnumeric); % always centred on the probe
 p.addParameter('RiseFall', 20, @isnumeric);  
 p.addParameter('ISI', 300, @isnumeric);  
 p.addParameter('fixed', 'noise',  @(x)any(strcmpi(x,{'noise','signal'})));
-p.addParameter('dBSPL', 70, @isnumeric);
+p.addParameter('dBSPL', 80, @isnumeric);
 % the nominal level of the fixed signal or noise - not yet used
 
 %% parameters concerned with tracking and the task
@@ -119,6 +119,15 @@ if sArgs.inQuiet && strcmp(sArgs.fixed, 'signal')
     error('Noise must be fixed to do test in quiet');
 end
 
-%     [ListenerName,TargetsFile,MaskerFile,starting_SNR,START_change_dB,MIN_change_dB,...
-%         MAX_TRIALS,LevittsK,ResponseChoices,PresentInQuiet,HRTF,TargetAz,MaskerAz,CatchTrials, Ear]...
-%         =SpecifyTestOrders;
+%% Get audio device ID based on the USB name of the device.
+if sArgs.usePlayrec == 1 % if you're using playrec
+    dev = playrec('getDevices');
+    d = find( cellfun(@(x)isequal(x,'ASIO Fireface USB'),{dev.name}) ); % find device of interest - RME FireFace channels 3+4
+    sArgs.playDeviceInd = dev(d).deviceID; 
+    sArgs.recDeviceInd = dev(d).deviceID;
+end
+
+%% Read in feedback faces
+sArgs=readFaces(sArgs);
+
+

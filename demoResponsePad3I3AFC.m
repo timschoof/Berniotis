@@ -24,7 +24,7 @@ play(playEm);
 IntervalIndicators(responseGUI, OneSoundDuration,ISI)
 
 trial=1;
-response = ResponsePad3I3AFC(Wave2Play,SampFreq,OneSoundDuration,ISI,CorrectAnswer,CorrectImage,IncorrectImage,trial)
+response = ResponsePad3I3AFC(Wave2Play,SampFreq,OneSoundDuration,ISI,CorrectAnswer,CorrectImage,IncorrectImage,trial);
 pause(0.5)
 
 trial=2;
