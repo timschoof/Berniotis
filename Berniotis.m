@@ -20,7 +20,7 @@ end
 p=BerniotisParseArgs(varargin{1},varargin{2:end});
 
 %% Settings for level
-if ispc
+if ispc && p.usePlayrec == 0
     [~, OutRMS]=SetLevels(p.VolumeSettingsFile);
 elseif ismac
     !osascript set_volume_applescript.scpt
@@ -296,9 +296,9 @@ elseif p.PlotTrackFile
     plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
 end
 
-% if player==1
-%     % close psych toolbox audio
-%     PsychPortAudio('DeleteBuffer');
-%     PsychPortAudio('Close');
-% end
+if p.usePlayrec==1
+    if playrec('isInitialised')
+        playrec('reset');
+    end
+end
 

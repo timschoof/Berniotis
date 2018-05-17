@@ -33,7 +33,7 @@ p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);
 p.addParameter('rms2use',0.15, @isnumeric);
 p.addParameter('NoiseBandWidth', 100, @isnumeric); % always centred on the probe  
 p.addParameter('RiseFall', 20, @isnumeric);  
-p.addParameter('ISI', 300, @isnumeric);  
+p.addParameter('ISI', 400, @isnumeric);  
 p.addParameter('fixed', 'noise',  @(x)any(strcmpi(x,{'noise','signal'})));
 p.addParameter('dBSPL', 80, @isnumeric);
 % the nominal level of the fixed signal or noise - not yet used
