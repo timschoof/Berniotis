@@ -26,7 +26,7 @@ p.addParameter('LongMaskerNoise', 000, @isnumeric);
 % if >0 = continuous through triple at given duration (ms)
 p.addParameter('preSilence', 0, @isnumeric);
 % an interval of silence prepended to the wavr to try to avoid sound glitches in Windows
-p.addParameter('InterauralTonePhase', '0', @ischar); % has to be character when reading in 'pi' from excel file
+p.addParameter('InterauralTonePhase', 0, @isnumeric); % has to be character when reading in 'pi' from excel file
 p.addParameter('TranspositionFreq', 4000, @isnumeric);
 p.addParameter('TranspositionLoPassCutoff', 1500, @isnumeric);
 p.addParameter('TranspositionSmoothingFilterOrder', 4, @isnumeric);  
@@ -59,6 +59,11 @@ p.addParameter('BackNzLevel',0.035, @isnumeric); % in absolute rms
 p.addParameter('BackNzLoPass',1300, @isnumeric);
 p.addParameter('BackNzHiPass',50, @isnumeric);
 p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
+p.addParameter('BackNzDur', 3600, @isnumeric);
+p.addParameter('propLongBackNzPreTarget', 0.9, @isnumeric);
+% a parameter to put targets towards one end or the other of the
+% BackNz. This is the proportion of time that the 'extra' masker
+% duration is put at the start of the trial
 %% parameters concerned with debugging
 p.addParameter('PlotTrackFile', 1, @isnumeric);
 p.addParameter('DEBUG', 0, @isnumeric);    
@@ -81,10 +86,12 @@ sArgs.SNR_dB = sArgs.starting_SNR; % current level
 sArgs.NoiseBandLimits=[sArgs.ToneFreq-sArgs.NoiseBandWidth/2 sArgs.ToneFreq+sArgs.NoiseBandWidth/2];
 
 % make InterauralTonePhase numeric
-if strcmp(sArgs.InterauralTonePhase,'pi')
+if sArgs.InterauralTonePhase == 3.14
     sArgs.InterauralTonePhase=pi;
-else
-    sArgs.InterauralTonePhase=str2double(sArgs.InterauralTonePhase);
+% elseif strcmp(sArgs.InterauralTonePhase,'0')
+%     sArgs.InterauralTonePhase=0;
+% else
+%     sArgs.InterauralTonePhase=str2double(sArgs.InterauralTonePhase);
 end
 
 if sArgs.TranspositionFreq>0
@@ -106,7 +113,10 @@ end
 
 % calculate initialDelay, the time before the 1st signal interval can occur
 signalInterval = sArgs.NumSignalPulses*sArgs.ToneDuration + (sArgs.NumSignalPulses-1) * sArgs.WithinPulseISI;
-if sArgs.LongMaskerNoise<=0 % if maskers are pulsed
+sArgs.SignalDuration=max(signalInterval,sArgs.NoiseDuration); % need this for PsychoacousticTraining
+if ~sArgs.BackNzPulsed % there is a long background masker noise
+    sArgs.initialDelay = sArgs.propLongBackNzPreTarget*(sArgs.BackNzDur - (3*max(sArgs.NoiseDuration,signalInterval)+2*sArgs.ISI));
+elseif sArgs.LongMaskerNoise<=0 % if maskers are pulsed
     sArgs.initialDelay = (sArgs.NoiseDuration-signalInterval)/2;
 else
     sArgs.initialDelay = (sArgs.LongMaskerNoise - (3*signalInterval+2*sArgs.ISI))/2;

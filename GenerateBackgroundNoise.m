@@ -1,11 +1,17 @@
 function Nz = GenerateBackgroundNoise(p)
 
-if p.LongMaskerNoise<=0 % if maskers are pulsed
-    NzSamples=samplify(p.NoiseDuration,p.SampFreq);
-    duration = (3*p.NoiseDuration + 2*p.ISI);
-else
-    NzSamples=samplify(p.LongMaskerNoise,p.SampFreq);
-    duration = (p.LongMaskerNoise);
+minNoiseDuration=3*p.SignalDuration+2*p.ISI; %
+if p.BackNzPulsed
+    error('pulsed background noise not fully implemented');
+else % this means the background noise runs continuously through a trial
+    duration = max(minNoiseDuration, p.BackNzDur);
+    NzSamples=samplify(duration,p.SampFreq);
+    % if p.LongMaskerNoise<=0 % if maskers are pulsed
+    %     NzSamples=samplify(p.NoiseDuration,p.SampFreq);
+    %     duration = (3*p.NoiseDuration + 2*p.ISI);
+    % else
+    %     NzSamples=samplify(p.LongMaskerNoise,p.SampFreq);
+    %     duration = (p.LongMaskerNoise);
 end
 ISIsamples=samplify(p.ISI,p.SampFreq);
 if p.BackNzLevel>0
@@ -17,13 +23,13 @@ if p.BackNzLevel>0
     Nz =  adjustRMS(Nz', p.BackNzLevel);
     % window in the appropriate way by constructing an envelope
     if p.BackNzPulsed
-        ISI=zeros(ISIsamples,1);
-        NzEnv = ones(NzSamples,1);
-        NzEnv=taper(NzEnv, p.RiseFall, p.RiseFall, p.SampFreq);
-        Env=vertcat(NzEnv,ISI,NzEnv,ISI,NzEnv);
-    elseif p.LongMaskerNoise<=0
-        Env = ones(3*NzSamples+2*ISIsamples,1);
-        Env=taper(Env, p.RiseFall, p.RiseFall, p.SampFreq);
+%         ISI=zeros(ISIsamples,1);
+%         NzEnv = ones(NzSamples,1);
+%         NzEnv=taper(NzEnv, p.RiseFall, p.RiseFall, p.SampFreq);
+%         Env=vertcat(NzEnv,ISI,NzEnv,ISI,NzEnv);
+%     elseif p.LongMaskerNoise<=0
+%         Env = ones(3*NzSamples+2*ISIsamples,1);
+%         Env=taper(Env, p.RiseFall, p.RiseFall, p.SampFreq);
     else % long masker noise
         Env = ones(NzSamples,1);
         Env=taper(Env, p.RiseFall, p.RiseFall, p.SampFreq);

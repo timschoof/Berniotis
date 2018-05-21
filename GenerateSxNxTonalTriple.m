@@ -46,21 +46,28 @@ else % long masker
     end
 end
 
-% prepend silence to wave if necessary
-w= vertcat(zeros(p.SampFreq*p.preSilence/1000,2),w);
-
 %% Transpose, if necessary
 if p.TranspositionFreq>0
     % function y = TransposeSounds(w,p)
     w = TransposeSounds(w,p);
 end
 
-%% add in background noise
+%% add in background noise, allowing for longer background noise
 if p.BackNzLevel>0
-    w = w + vertcat(zeros(p.SampFreq*p.preSilence/1000,1),GenerateBackgroundNoise(p));
+    Nz=GenerateBackgroundNoise(p);
+    % centre targets in background noise asymmetricaly if necessary 
+    xtra = length(Nz)-length(w);
+    xtraFront = ceil(p.propLongBackNzPreTarget*xtra);
+    if xtra>0
+        w=vertcat(zeros(xtraFront,2),w, zeros(xtra-xtraFront,2));
+    end
+    w = w + Nz;
 end
 % note that GenerateBackgroundNoise() generates 1 x n column vector
 % although w is a 2 x n vector (being stereo), Matlab addes the
 % 1-dimensional vector into each column of the multidimensional vector 
+
+% prepend silence to wave if necessary
+w= vertcat(zeros(samplify(p.preSilence,p.SampFreq),2),w);
 
 
