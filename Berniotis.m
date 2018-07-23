@@ -104,7 +104,7 @@ else
     fx='Nz';
 end
 
-CondCode=sprintf('%dHzS-S%s-%03drms-Fix%s-%dP',p.ToneFreq,phz,round(p.rms2use*1000),fx,p.NumSignalPulses);
+CondCode=sprintf('%dHzS-S%s-%03drms-%ddBSPL-Fix%s-%dP',p.ToneFreq,phz,round(p.rms2use*1000),p.dBSPL,fx,p.NumSignalPulses);
 FileListenerName=[p.ListenerName '_' CondCode '_' StartDate '_' FileNamingStartTime];
 OutFile = fullfile(p.OutputDir, [FileListenerName '.csv']);
 SummaryOutFile = fullfile(p.OutputDir, [FileListenerName '_sum.csv']);
@@ -291,7 +291,7 @@ fclose('all');
 set(0,'ShowHiddenHandles','on');
 delete(findobj('Type','figure'));
 if ~p.DEBUG && ~p.PlotTrackFile
-    FinishButton; % indicate test is over
+%     FinishButton; % indicate test is over
 elseif p.PlotTrackFile
     plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
 end

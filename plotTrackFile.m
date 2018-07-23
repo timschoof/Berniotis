@@ -35,6 +35,9 @@ if length(trial)>5
     plot(trial(correct==1), SNR(correct==1), 'go')
     % ylim([minSNR maxSNR]);
     title(strrep(labelString,'_','-'))
+    saveas(gcf,['',fileName(1:end-4),'.jpg',''])
+    pause(1.5)
+    close(gcf)
 end
 
 

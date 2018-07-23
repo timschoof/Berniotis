@@ -22,7 +22,7 @@ function varargout = ResponsePad3I3AFC(varargin)
 
 % Edit the above text to modify the response to help ResponsePad3I3AFC
 
-% Last Modified by GUIDE v2.5 07-Mar-2018 16:38:10
+% Last Modified by GUIDE v2.5 20-Jul-2018 18:09:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
