@@ -293,11 +293,7 @@ delete(findobj('Type','figure'));
 if ~p.DEBUG && ~p.PlotTrackFile
 %     FinishButton; % indicate test is over
 elseif p.PlotTrackFile && trial>5
-    plotHandle = plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
-    if exist('plotHandle')
-        saveas(plotHandle,fullfile(p.OutputDir,[FileListenerName '.png']));
-        close(gcf)
-    end
+    plotTrackFile(OutFile, FileListenerName); %strrep(strrep(OutFile, '.csv', ''))
 end
 
 if p.usePlayrec==1

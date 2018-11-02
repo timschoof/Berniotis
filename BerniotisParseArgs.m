@@ -55,7 +55,7 @@ p.addParameter('FeedBack', 'Corrective', @ischar);
 p.addParameter('MAX_TRIALS', 30, @isnumeric);
 p.addParameter('FacePixDir', 'Bears', @ischar);
 %% parameters concerned with background noise
-p.addParameter('BackNzLevel',0.035, @isnumeric); % in absolute rms
+p.addParameter('BackNzLevel',0.056, @isnumeric); % in absolute rms
 p.addParameter('BackNzLoPass',1300, @isnumeric);
 p.addParameter('BackNzHiPass',50, @isnumeric);
 p.addParameter('BackNzPulsed',0, @isnumeric); % 0 = continuous through triple
