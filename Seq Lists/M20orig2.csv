@@ -1,0 +1,4 @@
+nBlocks,nPracticeTrials,InterauralTonePhase,TranspositionFreq,ToneFreq,MAX_TRIALS,InitialDescentMinimum,starting_SNR,dBSPL,NoiseBandWidth,BackNzLevel,StartMessage
+1,0,0,4000,125,30,-5,12,80,100,0.056,This will be fairly loud
+1,0,3.14,4000,125,30,-12,7,40,100,0.056,This will be rather quiet
+1,0,3.14,4000,125,30,-12,7,80,100,0.056,This will be fairly loud
